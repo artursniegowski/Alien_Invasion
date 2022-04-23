@@ -16,7 +16,7 @@ def game_on():
     space_ship = SpaceShip(screen)
 
     # run window
-    while True:
+    while True: 
 
         # Watch for keyboard and mouse events
         game_func.check_events()
