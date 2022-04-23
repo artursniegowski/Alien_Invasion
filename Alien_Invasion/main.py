@@ -1,7 +1,7 @@
 import pygame
 from my_settings import MySettings
 from space_ship import SpaceShip
-import sys
+import functions as game_func
 
 
 def game_on():
@@ -9,7 +9,7 @@ def game_on():
     pygame.init()
     my_settings = MySettings()
     screen = pygame.display.set_mode((my_settings.screen_width,\
-        my_settings.screen_height),pygame.RESIZABLE)
+        my_settings.screen_height))
     pygame.display.set_caption(my_settings.caption)
     
     # Make a spaceship
@@ -19,17 +19,9 @@ def game_on():
     while True:
 
         # Watch for keyboard and mouse events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        # Changing surface color
-        screen.fill(my_settings.background_color)
-        space_ship.draw_ship()
-
-        # Update the screen
-        pygame.display.update()
+        game_func.check_events()
+        # updatign screen 
+        game_func.update_view(my_settings,screen,space_ship)
 
         
 # Start the game
