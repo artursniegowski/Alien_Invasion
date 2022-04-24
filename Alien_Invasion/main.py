@@ -13,13 +13,14 @@ def game_on():
     pygame.display.set_caption(my_settings.caption)
     
     # Make a spaceship
-    space_ship = SpaceShip(screen)
+    space_ship = SpaceShip(my_settings,screen)
 
     # run window
     while True: 
 
         # Watch for keyboard and mouse events
-        game_func.check_events()
+        game_func.check_events(space_ship)
+        space_ship.update_pos()
         # updatign screen 
         game_func.update_view(my_settings,screen,space_ship)
 

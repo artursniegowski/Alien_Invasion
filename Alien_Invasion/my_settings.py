@@ -10,3 +10,5 @@ class MySettings():
         self.background_color = (125,125,125)
         # Name of the window
         self.caption = "ALIEN INVASION V1.0"
+        # Ship settings - speed
+        self.ship_speed = 0.2
