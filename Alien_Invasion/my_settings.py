@@ -11,9 +11,10 @@ class MySettings():
         # Name of the window
         self.caption = "ALIEN INVASION V1.0"
         # Ship settings - speed
-        self.ship_speed = 0.2
+        self.ship_speed = 0.15
         # Rockets settings
-        self.rocket_speed = 0.1
+        self.rocket_speed = 0.2
         self.rocket_width = 2
         self.rocket_height = 12
         self.rocket_color_RGB = (255,10,10)
+        self.rocket_capacity = 4

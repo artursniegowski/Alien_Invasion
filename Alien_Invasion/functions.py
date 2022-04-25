@@ -7,7 +7,7 @@ from rocket import Rocket
 
 def check_events_keydown(event: pygame.event, my_settings : MySettings,\
      screen : pygame.Surface, space_ship: SpaceShip,\
-          rockets : Group ) -> None:
+          rockets :  Group ) -> None:
     """Events - key down"""
     if event.key == pygame.K_RIGHT:
         # Start movig to the right
@@ -17,8 +17,9 @@ def check_events_keydown(event: pygame.event, my_settings : MySettings,\
         space_ship.moving_left = True 
     elif event.key == pygame.K_SPACE:
         # New rocket - hit spacebar
-        rocket = Rocket(my_settings,screen,space_ship)
-        rockets.add(rocket)
+        if len(rockets) < my_settings.rocket_capacity:
+            rocket = Rocket(my_settings,screen,space_ship)
+            rockets.add(rocket)
         
 def check_events_keyup(event: pygame.event, space_ship: SpaceShip) -> None:
     """Events - key up"""
@@ -46,6 +47,17 @@ def check_events(my_settings : MySettings, screen : pygame.Surface, \
         elif event.type == pygame.KEYUP:
             check_events_keyup(event, space_ship)
 
+
+def update_rockets(rockets : Group) -> None:
+    """Encapsulating the functions managing rockets"""
+    rockets.update()
+
+    # Erasing rockets that are out of reach
+    #print(len(rockets))
+    #print((rockets))
+    for rocket in rockets:
+        if rocket.rocket_image_rect.bottom <= 0:
+            rockets.remove(rocket)
 
 def update_view(my_settings : MySettings, screen : pygame.Surface, \
     space_ship : SpaceShip, rockets : Group) -> None:
