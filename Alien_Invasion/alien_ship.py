@@ -21,6 +21,18 @@ class Alien_Ship(Sprite):
 
         self.alien_ship_rect = self.alien_ship.get_rect()
 
+        # Init position
+        self.alien_ship_pos_x = self.alien_ship_rect.x
+        # Rocket speed
+        self.ship_speed = my_settings.alien_ships_speed
+
+    def update(self) -> None:
+        """Updates the position of alien ship"""
+        pass
+        #self.alien_ship_pos_x += self.ship_speed
+        # Updating the Rect position of the rocket
+        #self.alien_ship_rect.x = self.alien_ship_pos_x 
+
     def draw_alien_ship(self):
         """Draw the alien ship at its current location"""
         self.screen.blit(self.alien_ship, self.alien_ship_rect)

@@ -21,7 +21,6 @@ def game_on():
     alien_ships = pygame.sprite.Group()
     # Position all the alien ships
     game_func.position_alien_ships(my_settings,screen,alien_ships)
-    #alien_ship = Alien_Ship(my_settings,screen)
     
     # run window
     while True: 
@@ -30,7 +29,7 @@ def game_on():
         game_func.check_events(my_settings,screen,space_ship,rockets)
         space_ship.update_pos()
         game_func.update_rockets(rockets)
-
+        game_func.update_alien_ships(alien_ships)
         # updatign screen 
         game_func.update_view(my_settings,screen,space_ship,rockets,alien_ships)
 

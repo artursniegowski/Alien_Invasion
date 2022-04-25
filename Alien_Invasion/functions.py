@@ -85,6 +85,7 @@ def position_alien_ships(my_settings : MySettings, screen :pygame.Surface, \
             alien_ship.alien_ship_rect.y = pos_y
             alien_ships.add(alien_ship)
 
+
 def max_alien_ships_x(my_settings : MySettings, alien_ship: Alien_Ship) -> int:
     """Calculating max number of ships (horizontally)"""
     Max_aliens_ships_x = int((my_settings.screen_width / \
@@ -98,6 +99,10 @@ def max_alien_ships_y(my_settings : MySettings, alien_ship: Alien_Ship) -> int:
         alien_ship.alien_ship_rect.height) /my_settings.space_factor_y * 0.4)
 
     return Max_aliens_ships_y
+
+def update_alien_ships(alien_ships : Group) -> None :
+    """Move all the allien ships"""
+    alien_ships.update()
 
 def update_view(my_settings : MySettings, screen : pygame.Surface, \
     space_ship : SpaceShip, rockets : Group, alien_ships : Group) -> None:
