@@ -22,16 +22,24 @@ class Alien_Ship(Sprite):
         self.alien_ship_rect = self.alien_ship.get_rect()
 
         # Init position
-        self.alien_ship_pos_x = self.alien_ship_rect.x
-        # Rocket speed
-        self.ship_speed = my_settings.alien_ships_speed
+        self.x_increment = 0.0
 
     def update(self) -> None:
         """Updates the position of alien ship"""
+        #pass
+        self.x_increment += self.my_settings.alien_ships_speed
+        if self.x_increment >= 1.0:
+            if self.my_settings.direction_alien_RIGHT and \
+                not self.my_settings.direction_alien_LEFT:
+                self.alien_ship_rect.x += 1
+            elif not self.my_settings.direction_alien_RIGHT and \
+                self.my_settings.direction_alien_LEFT:
+                self.alien_ship_rect.x -= 1
+
+            self.x_increment = 0.0
+
+    def check_vertical_borders(self):
         pass
-        #self.alien_ship_pos_x += self.ship_speed
-        # Updating the Rect position of the rocket
-        #self.alien_ship_rect.x = self.alien_ship_pos_x 
 
     def draw_alien_ship(self):
         """Draw the alien ship at its current location"""

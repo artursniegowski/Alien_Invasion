@@ -21,4 +21,9 @@ class MySettings():
         # alien settins
         self.space_factor_x = 2.5
         self.space_factor_y = 1.5
-        self.alien_ships_speed = 0.1
+        # Max speed is 1.0 
+        self.alien_ships_speed = 0.3
+        # in pixels !
+        self.alien_ships_speed_droping = 10
+        self.direction_alien_RIGHT = False
+        self.direction_alien_LEFT = True
