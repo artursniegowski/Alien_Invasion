@@ -1,27 +1,36 @@
 import sys
 import pygame
+from pygame.sprite import Group
 from my_settings import MySettings
 from space_ship import SpaceShip
+from rocket import Rocket
 
-def check_events_keydown(ship: SpaceShip, event: pygame.event) -> None:
+def check_events_keydown(event: pygame.event, my_settings : MySettings,\
+     screen : pygame.Surface, space_ship: SpaceShip,\
+          rockets : Group ) -> None:
     """Events - key down"""
     if event.key == pygame.K_RIGHT:
         # Start movig to the right
-        ship.moving_right = True 
+        space_ship.moving_right = True 
     elif event.key == pygame.K_LEFT:
         # Start movig to the left
-        ship.moving_left = True 
-
-def check_events_keyup(ship: SpaceShip, event: pygame.event) -> None:
+        space_ship.moving_left = True 
+    elif event.key == pygame.K_SPACE:
+        # New rocket - hit spacebar
+        rocket = Rocket(my_settings,screen,space_ship)
+        rockets.add(rocket)
+        
+def check_events_keyup(event: pygame.event, space_ship: SpaceShip) -> None:
     """Events - key up"""
     if event.key == pygame.K_RIGHT:
         # Stop movig to the right
-        ship.moving_right = False 
+        space_ship.moving_right = False 
     elif event.key == pygame.K_LEFT:
         # Stop movig to the left
-        ship.moving_left = False 
+        space_ship.moving_left = False 
 
-def check_events(ship: SpaceShip) -> None:
+def check_events(my_settings : MySettings, screen : pygame.Surface, \
+    space_ship : SpaceShip, rockets : Group) -> None:
     """Watch for keyboard and mouse events"""
     for event in pygame.event.get():
         # Exiting the game
@@ -31,17 +40,22 @@ def check_events(ship: SpaceShip) -> None:
 
         # Moving the ship
         elif event.type == pygame.KEYDOWN:
-            check_events_keydown(ship, event)
+            check_events_keydown(event, my_settings, screen, space_ship, \
+                rockets)
         
         elif event.type == pygame.KEYUP:
-            check_events_keyup(ship, event)
+            check_events_keyup(event, space_ship)
 
 
 def update_view(my_settings : MySettings, screen : pygame.Surface, \
-    space_ship : SpaceShip) -> None:
+    space_ship : SpaceShip, rockets : Group) -> None:
         """Update view on tha main screen"""
         # Changing surface color
         screen.fill(my_settings.background_color)
-        space_ship.draw_ship()
+        space_ship.draw_ship()       
+        # Draw all the rockets
+        for rocket in rockets:
+            rocket.draw_rocket()
         # Update the screen
         pygame.display.update()
+        #pygame.display.flip()

@@ -2,7 +2,7 @@ import pygame
 from my_settings import MySettings
 from space_ship import SpaceShip
 import functions as game_func
-
+from rocket import Rocket
 
 def game_on():
     # Main thread - init Pygame , screen etc.
@@ -14,15 +14,18 @@ def game_on():
     
     # Make a spaceship
     space_ship = SpaceShip(my_settings,screen)
-
+    # Creating a group of rockets
+    rockets = pygame.sprite.Group()
+    
     # run window
     while True: 
 
         # Watch for keyboard and mouse events
-        game_func.check_events(space_ship)
+        game_func.check_events(my_settings,screen,space_ship,rockets)
         space_ship.update_pos()
+        rockets.update()
         # updatign screen 
-        game_func.update_view(my_settings,screen,space_ship)
+        game_func.update_view(my_settings,screen,space_ship,rockets)
 
         
 # Start the game
