@@ -3,6 +3,7 @@ from my_settings import MySettings
 from space_ship import SpaceShip
 import functions as game_func
 from rocket import Rocket
+from alien_ship import Alien_Ship
 
 def game_on():
     # Main thread - init Pygame , screen etc.
@@ -16,6 +17,11 @@ def game_on():
     space_ship = SpaceShip(my_settings,screen)
     # Creating a group of rockets
     rockets = pygame.sprite.Group()
+    # Creating alien ships
+    alien_ships = pygame.sprite.Group()
+    # Position all the alien ships
+    game_func.position_alien_ships(my_settings,screen,alien_ships)
+    #alien_ship = Alien_Ship(my_settings,screen)
     
     # run window
     while True: 
@@ -26,7 +32,7 @@ def game_on():
         game_func.update_rockets(rockets)
 
         # updatign screen 
-        game_func.update_view(my_settings,screen,space_ship,rockets)
+        game_func.update_view(my_settings,screen,space_ship,rockets,alien_ships)
 
         
 # Start the game

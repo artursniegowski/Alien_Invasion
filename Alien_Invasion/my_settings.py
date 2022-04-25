@@ -18,3 +18,6 @@ class MySettings():
         self.rocket_height = 12
         self.rocket_color_RGB = (255,10,10)
         self.rocket_capacity = 4
+        # alien settins
+        self.space_factor_x = 1.5
+        self.space_factor_y = 1.5

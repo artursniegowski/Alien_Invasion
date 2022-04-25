@@ -12,9 +12,9 @@ class SpaceShip():
         self.my_settings = my_settings
         # Load the ship
         self.ship = pygame.image.load(os.path.join("Alien_Invasion","images",\
-            "space_ship.png"))
+            "space_ship_2.png"))
         self.ship.convert()
-        #self.image = pygame.transform.rotozoom(self.image, 0, 0.8)
+        self.ship = pygame.transform.rotozoom(self.ship, 0, 0.2)
 
         self.ship_rect = self.ship.get_rect()
         self.screen_rect = self.screen.get_rect()
