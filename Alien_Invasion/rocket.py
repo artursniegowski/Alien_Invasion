@@ -22,7 +22,8 @@ class Rocket(Sprite):
         # Update the position of this pbject by setting the values of rect.x 
         # and rect.y
         self.rocket_image_rect = self.rocket_image.get_rect()
-
+        self.rect =  self.rocket_image_rect
+        
         # Set starting postion above the ship
         self.rocket_image_rect.centerx = ship.ship_rect.centerx
         self.rocket_image_rect.top = ship.ship_rect.top

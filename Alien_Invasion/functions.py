@@ -54,13 +54,18 @@ def check_events(my_settings : MySettings, screen : pygame.Surface, \
             check_events_keyup(event, space_ship)
 
 
-def update_rockets(rockets : Group) -> None:
+def update_rockets(alien_ships : Group ,rockets : Group) -> None:
     """Encapsulating the functions managing rockets"""
+    
+    # Updating rockets position
     rockets.update()
+    
+    # checking for contact betwen rockets and alien_ships
+    contact_alien_ship_rocket = pygame.sprite.groupcollide(rockets,alien_ships,True,True)
 
     # Erasing rockets that are out of reach
     #print(len(rockets))
-    #print((rockets))
+    #print(len(alien_ships))
     for rocket in rockets:
         if rocket.rocket_image_rect.bottom <= 0:
             rockets.remove(rocket)
@@ -104,6 +109,26 @@ def update_alien_ships(alien_ships : Group) -> None :
     """Move all the allien ships"""
     alien_ships.update()
 
+def check_alien_ship_on_the_edege(my_settings : MySettings, \
+    alien_ships : Group) -> None:
+    """Checking if a alien ship is on the edge and changing the \
+        direction they move"""
+    for alien_ship in alien_ships:
+        if alien_ship.check_vertical_right_border():
+            my_settings.direction_alien_RIGHT = False
+            drop_alien_ships(my_settings,alien_ships)
+            break
+        if alien_ship.check_vertical_left_border():
+            my_settings.direction_alien_RIGHT = True
+            drop_alien_ships(my_settings,alien_ships)
+            break
+
+def drop_alien_ships(my_settings : MySettings, \
+    alien_ships : Group) -> None:
+    """Droping the alien ships"""
+    for alien_ship in alien_ships:
+        alien_ship.alien_ship_rect.y += my_settings.alien_ships_speed_droping
+
 def update_view(my_settings : MySettings, screen : pygame.Surface, \
     space_ship : SpaceShip, rockets : Group, alien_ships : Group) -> None:
         """Update view on tha main screen"""
@@ -116,6 +141,8 @@ def update_view(my_settings : MySettings, screen : pygame.Surface, \
         # Drawing Alien ships
         for alien_ship in alien_ships:
             alien_ship.draw_alien_ship()
+        # changing the sites the alien ships are moving
+        check_alien_ship_on_the_edege(my_settings,alien_ships)
         # Update the screen
         pygame.display.update()
         #pygame.display.flip()
