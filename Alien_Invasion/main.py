@@ -28,8 +28,8 @@ def game_on():
         # Watch for keyboard and mouse events
         game_func.check_events(my_settings,screen,space_ship,rockets)
         space_ship.update_pos()
-        game_func.update_rockets(alien_ships,rockets)
-        game_func.update_alien_ships(alien_ships)
+        game_func.update_rockets(my_settings,screen,alien_ships,rockets)
+        game_func.update_alien_ships(my_settings,space_ship,alien_ships)
         # updatign screen 
         game_func.update_view(my_settings,screen,space_ship,rockets,alien_ships)
 

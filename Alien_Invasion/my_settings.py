@@ -13,7 +13,7 @@ class MySettings():
         # Ship settings - speed
         self.ship_speed = 0.2
         # Rockets settings
-        self.rocket_speed = 0.3
+        self.rocket_speed = 0.6
         self.rocket_width = 2
         self.rocket_height = 12
         self.rocket_color_RGB = (255,10,10)

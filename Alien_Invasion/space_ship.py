@@ -18,6 +18,7 @@ class SpaceShip():
 
         self.ship_rect = self.ship.get_rect()
         self.screen_rect = self.screen.get_rect()
+        self.rect = self.ship_rect
 
         # Start each new ship at the bottom center of the screen
         self.ship_rect.centerx = self.screen_rect.centerx

@@ -1,5 +1,4 @@
 import sys
-from tkinter.messagebox import NO
 import pygame
 from pygame.sprite import Group
 from my_settings import MySettings
@@ -23,10 +22,18 @@ def check_events_keydown(event: pygame.event, my_settings : MySettings,\
         space_ship.moving_left = True 
     elif event.key == pygame.K_SPACE:
         # New rocket - hit spacebar
-        if len(rockets) < my_settings.rocket_capacity:
-            rocket = Rocket(my_settings,screen,space_ship)
-            rockets.add(rocket)
-        
+        add_rocket(space_ship,rockets,screen,my_settings)
+        #if len(rockets) < my_settings.rocket_capacity:
+        #    rocket = Rocket(my_settings,screen,space_ship)
+        #    rockets.add(rocket)
+
+def add_rocket(space_ship : SpaceShip , rockets : Group , \
+    screen : pygame.Surface, my_settings : MySettings) -> None :
+    """Creating rockets"""
+    if len(rockets) < my_settings.rocket_capacity:
+        rocket = Rocket(my_settings,screen,space_ship)
+        rockets.add(rocket)
+
 def check_events_keyup(event: pygame.event, space_ship: SpaceShip) -> None:
     """Events - key up"""
     if event.key == pygame.K_RIGHT:
@@ -54,20 +61,32 @@ def check_events(my_settings : MySettings, screen : pygame.Surface, \
             check_events_keyup(event, space_ship)
 
 
-def update_rockets(alien_ships : Group ,rockets : Group) -> None:
+def update_rockets(my_settings : MySettings, screen :pygame.Surface, \
+    alien_ships : Group ,rockets : Group) -> None:
     """Encapsulating the functions managing rockets"""
     
     # Updating rockets position
     rockets.update()
-    
     # checking for contact betwen rockets and alien_ships
-    contact_alien_ship_rocket = pygame.sprite.groupcollide(rockets,alien_ships,True,True)
+    contact_alien_ship_rocket = pygame.sprite.groupcollide(rockets,alien_ships,\
+        True,True)
 
     # Erasing rockets that are out of reach
     #print(len(rockets))
     #print(len(alien_ships))
+    # remove rockets that went pssed the screen
+    remove_all_rockets(rockets)
+    
+    # When all alien ships were shoot down we start over
+    if(len(alien_ships)==0):
+        #remove_all_rockets(rockets,removing_all=True)
+        rockets.empty()
+        position_alien_ships(my_settings,screen,alien_ships)
+    
+def remove_all_rockets(rockets : Group , removing_all : bool = False) -> None:
+    """Removing all existing rockets"""
     for rocket in rockets:
-        if rocket.rocket_image_rect.bottom <= 0:
+        if rocket.rocket_image_rect.bottom <= 0 or removing_all:
             rockets.remove(rocket)
 
 def position_alien_ships(my_settings : MySettings, screen :pygame.Surface, \
@@ -100,14 +119,21 @@ def max_alien_ships_x(my_settings : MySettings, alien_ship: Alien_Ship) -> int:
 
 def max_alien_ships_y(my_settings : MySettings, alien_ship: Alien_Ship) -> int:
     """Calculating max number of ships (vertically) """
+    filling_density = 0.4
     Max_aliens_ships_y = int((my_settings.screen_height / \
-        alien_ship.alien_ship_rect.height) /my_settings.space_factor_y * 0.4)
+        alien_ship.alien_ship_rect.height) /my_settings.space_factor_y * \
+            filling_density)
 
     return Max_aliens_ships_y
 
-def update_alien_ships(alien_ships : Group) -> None :
+def update_alien_ships(my_settings : MySettings, space_ship : SpaceShip, \
+    alien_ships : Group) -> None :
     """Move all the allien ships"""
     alien_ships.update()
+
+    # Chcking if the alien ships reached the our ship
+    if pygame.sprite.spritecollideany(space_ship,alien_ships):
+        print("Ship hit!!")
 
 def check_alien_ship_on_the_edege(my_settings : MySettings, \
     alien_ships : Group) -> None:
