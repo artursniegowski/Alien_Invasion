@@ -41,6 +41,10 @@ class SpaceShip():
         # Updating the position
         self.ship_rect.centerx = self.center 
 
+    def starting_pos(self):
+        """initial position for the space ship"""
+        self.center = self.screen_rect.centerx
+
     def draw_ship(self):
         """Draw the ship at its current location"""
         self.screen.blit(self.ship, self.ship_rect)

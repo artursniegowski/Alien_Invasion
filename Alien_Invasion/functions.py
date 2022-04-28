@@ -5,6 +5,7 @@ from my_settings import MySettings
 from space_ship import SpaceShip
 from rocket import Rocket
 from alien_ship import Alien_Ship
+from statistics_game import Statistics
 
 def check_events_keydown(event: pygame.event, my_settings : MySettings,\
      screen : pygame.Surface, space_ship: SpaceShip,\
@@ -126,14 +127,52 @@ def max_alien_ships_y(my_settings : MySettings, alien_ship: Alien_Ship) -> int:
 
     return Max_aliens_ships_y
 
-def update_alien_ships(my_settings : MySettings, space_ship : SpaceShip, \
-    alien_ships : Group) -> None :
+def if_allien_ship_reached_bottom(my_settings : MySettings, game_stats : Statistics, \
+    screen : pygame.Surface, space_ship : SpaceShip, alien_ships : Group, \
+        rockets : Group) -> None :
+        """Checking if any alien ships reached the bottom of the screen"""
+        screen_rect = screen.get_rect()
+        for alien in alien_ships:
+            if alien.rect.bottom >= screen_rect.bottom:
+                # same as palyer loosing
+                ending_life_ship(my_settings,game_stats,screen,space_ship,alien_ships,\
+                    rockets)
+                #ending the game
+                break
+
+def update_alien_ships(my_settings : MySettings, game_stats : Statistics, \
+    screen : pygame.Surface, space_ship : SpaceShip, alien_ships : Group, \
+        rockets : Group) -> None :
     """Move all the allien ships"""
     alien_ships.update()
 
     # Chcking if the alien ships reached the our ship
     if pygame.sprite.spritecollideany(space_ship,alien_ships):
-        print("Ship hit!!")
+        ending_life_ship(my_settings,game_stats,screen,space_ship,alien_ships,\
+            rockets)
+
+    if_allien_ship_reached_bottom(my_settings,game_stats,screen,space_ship,\
+        alien_ships,rockets)
+
+def ending_life_ship(my_settings : MySettings, game_stats : Statistics, \
+    screen : pygame.Surface, space_ship : SpaceShip, alien_ships : Group, \
+    rockets : Group) -> None :
+    """Logic when collison wiht an alien ship occurs"""
+    # Decreassing lifes of eh player
+    game_stats.ships_lifes -= 1
+
+    if game_stats.ships_lifes > 0:
+        # restart the game 
+        alien_ships.empty()
+        rockets.empty()
+
+        # create alien ships from starting possiton
+        position_alien_ships(my_settings,screen,alien_ships)
+        # initila position for the space ship
+        space_ship.starting_pos()
+    else:
+        game_stats.game_on = False
+
 
 def check_alien_ship_on_the_edege(my_settings : MySettings, \
     alien_ships : Group) -> None:

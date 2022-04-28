@@ -4,6 +4,7 @@ from space_ship import SpaceShip
 import functions as game_func
 from rocket import Rocket
 from alien_ship import Alien_Ship
+from statistics_game import Statistics
 
 def game_on():
     # Main thread - init Pygame , screen etc.
@@ -13,6 +14,8 @@ def game_on():
         my_settings.screen_height))
     pygame.display.set_caption(my_settings.caption)
     
+    # Instance to store game statistics
+    game_stats = Statistics(my_settings)
     # Make a spaceship
     space_ship = SpaceShip(my_settings,screen)
     # Creating a group of rockets
@@ -27,9 +30,15 @@ def game_on():
 
         # Watch for keyboard and mouse events
         game_func.check_events(my_settings,screen,space_ship,rockets)
-        space_ship.update_pos()
-        game_func.update_rockets(my_settings,screen,alien_ships,rockets)
-        game_func.update_alien_ships(my_settings,space_ship,alien_ships)
+       
+        # Checking if the players has still lives left
+        if game_stats.game_on:
+            space_ship.update_pos()
+            game_func.update_rockets(my_settings,screen,alien_ships,rockets)
+            game_func.update_alien_ships(my_settings,game_stats,screen,space_ship,\
+                alien_ships,rockets)
+
+
         # updatign screen 
         game_func.update_view(my_settings,screen,space_ship,rockets,alien_ships)
 
