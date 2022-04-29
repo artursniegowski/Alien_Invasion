@@ -15,16 +15,67 @@ class Scores():
         self.tex_color_RGB = my_settings.score_text_color_RGB
         self.font = pygame.font.SysFont(None,self.my_settings.score_text_size)
 
+        # initlai score
+        self.update_score()
+        # highes score
+        self.update_high_score()
+        # update level
+        self.update_level()
+        # update lives
+        self.update_lives()
+
+    def update_score(self) -> None:
+        """Updating the score"""    
         # changing the score to a imgage
-        self.score_text_image = self.font.render(str(self.game_stats.total_score),\
-            True,self.tex_color_RGB)
+        self.score_text_image = self.font.render("Points: " + \
+            str(self.game_stats.total_score),True,self.tex_color_RGB)
 
         #  position of the score
         self.score_rect = self.score_text_image.get_rect()
         self.score_rect.topright = self.screen_rect.topright
         self.score_rect.x -= 20
-        self.score_rect.y += 20
+        self.score_rect.y += 5
+
+    def update_high_score(self) -> None:
+        """Updating the high score"""    
+        # changing the high score to a imgage
+        self.high_score_text_image = self.font.render("High Score: " + \
+            str(self.game_stats.high_score),True,self.tex_color_RGB)
+
+        #  position of the score
+        self.high_score_rect = self.high_score_text_image.get_rect()
+        self.high_score_rect.topleft = self.screen_rect.topleft
+        self.high_score_rect.x += 10
+        self.high_score_rect.y += 5
+
+    def update_level(self) -> None:
+        """Updating the level"""    
+        # changing the level number to a imgage
+        self.level_text_image = self.font.render("Level: " + \
+            str(self.game_stats.level),True,self.tex_color_RGB)
+
+        #  position of the level image
+        self.level_rect = self.level_text_image.get_rect()
+        self.level_rect.bottomleft = self.screen_rect.bottomleft
+        self.level_rect.x += 10
+        self.level_rect.y -= 5  
+
+    def update_lives(self) -> None:
+        """Updating lives"""    
+        # changing the lives number to a imgage
+        self.lives_text_image = self.font.render("Lives: " + \
+            str(self.game_stats.ships_lifes),True,self.tex_color_RGB)
+
+        #  position of the lives image
+        self.lives_rect = self.lives_text_image.get_rect()
+        self.lives_rect.bottomright = self.screen_rect.bottomright
+        self.lives_rect.x -= 20
+        self.lives_rect.y -= 5 
 
     def draw_score(self) -> None:
         """drawing the score"""
         self.screen.blit(self.score_text_image,self.score_rect)
+        self.screen.blit(self.high_score_text_image,self.high_score_rect)
+        self.screen.blit(self.level_text_image,self.level_rect)
+        self.screen.blit(self.lives_text_image,self.lives_rect)
+        

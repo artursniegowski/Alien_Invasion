@@ -15,7 +15,7 @@ class MySettings():
         # Rockets settings
         self.rocket_width = 2
         self.rocket_height = 12
-        self.rocket_color_RGB = (255,10,10)
+        self.rocket_color_RGB = (100,0,0)
         self.rocket_capacity = 4
         # alien settins
         self.space_factor_x = 2.5
@@ -38,17 +38,25 @@ class MySettings():
     def init_settings_start_game(self) -> None:
         """Initiated the settings that will change over time"""
         # Max speed is 1.0 
-        self.alien_ships_speed = 0.2
+        self.alien_ships_speed = 0.3
         # in pixels !
-        self.alien_ships_speed_droping = 1
+        self.alien_ships_speed_droping = 2
          # Rockets settings
         self.rocket_speed = 0.6
         # Ship settings - speed
         self.ship_speed = 0.2
+        # starting score for alien ship
+        self.alien_ship_points = 10
+        # starting score for finishing a level
+        self.nex_level_points = 40
+
+
 
     def next_level(self) -> None:
         """Adjusting the sttings of the game to make it harder"""
-        self.alien_ships_speed += 0.2
+        self.alien_ships_speed += 0.1
         self.alien_ships_speed_droping += 1
         self.rocket_speed += 0.2
         self.ship_speed += 0.1
+        self.alien_ship_points += 5
+        self.nex_level_points += 15

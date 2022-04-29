@@ -46,7 +46,7 @@ def check_events_keyup(event: pygame.event, space_ship: SpaceShip) -> None:
         # Stop movig to the left
         space_ship.moving_left = False 
 
-def check_events(my_settings : MySettings, screen : pygame.Surface, \
+def check_events(display_scores : Scores ,my_settings : MySettings, screen : pygame.Surface, \
     game_stats : Statistics, start_button : Control, space_ship : SpaceShip, \
     rockets : Group, alien_ships : Group) -> None:
     """Watch for keyboard and mouse events"""
@@ -64,8 +64,8 @@ def check_events(my_settings : MySettings, screen : pygame.Surface, \
         # Start button
         elif event.type == pygame.MOUSEBUTTONDOWN:
             (mouse_x, mouse_y) = pygame.mouse.get_pos()
-            check_in_range_start_button(game_stats,my_settings,screen, \
-                start_button,space_ship,alien_ships,rockets,mouse_x,mouse_y)
+            check_in_range_start_button(display_scores,game_stats,my_settings,\
+                screen, start_button,space_ship,alien_ships,rockets,mouse_x,mouse_y)
 
         elif event.type == pygame.MOUSEMOTION:
             (mouse_x, mouse_y) = pygame.mouse.get_pos()
@@ -74,7 +74,7 @@ def check_events(my_settings : MySettings, screen : pygame.Surface, \
         elif event.type == pygame.KEYUP:
             check_events_keyup(event, space_ship)
 
-def check_in_range_start_button(game_stats : Statistics, \
+def check_in_range_start_button(display_scores: Scores, game_stats : Statistics,\
     my_settings : MySettings, screen : pygame.Surface, start_button : Control,\
     space_ship : SpaceShip ,alien_ships : Group ,rockets : Group, \
         mouse_x : int, mouse_y : int) -> None :
@@ -90,6 +90,12 @@ def check_in_range_start_button(game_stats : Statistics, \
         alien_ships.empty()
         rockets.empty()
         
+        # Display staring values scores
+        display_scores.update_score()
+        # update level
+        display_scores.update_level()
+        # update lives
+        display_scores.update_lives()
 
         # Create the game 
         position_alien_ships(my_settings,screen,alien_ships)
@@ -105,7 +111,8 @@ def check_if_mouse_above_button(start_button : Control, mouse_x : int,\
         start_button.hover = False
 
 def update_rockets(my_settings : MySettings, screen :pygame.Surface, \
-    alien_ships : Group ,rockets : Group) -> None:
+    alien_ships : Group ,rockets : Group, game_stats : Statistics, \
+        display_score : Scores) -> None:
     """Encapsulating the functions managing rockets"""
     
     # Updating rockets position
@@ -114,19 +121,39 @@ def update_rockets(my_settings : MySettings, screen :pygame.Surface, \
     contact_alien_ship_rocket = pygame.sprite.groupcollide(rockets,alien_ships,\
         True,True)
 
+    if contact_alien_ship_rocket:
+        for alien_ships in contact_alien_ship_rocket.values():
+            for alien in alien_ships:
+                # addin points for destroying an alien ship
+                game_stats.total_score += my_settings.alien_ship_points
+                # updating main score
+                display_score.update_score()
+                # updating high score
+                update_high_score(game_stats,display_score)
+
     # Erasing rockets that are out of reach
     #print(len(rockets))
     #print(len(alien_ships))
-    # remove rockets that went pssed the screen
+    # remove rockets that went pass the screen
     remove_all_rockets(rockets)
     
     # When all alien ships were shoot down we start over -nxt level
     if(len(alien_ships)==0):
         #remove_all_rockets(rockets,removing_all=True)
         rockets.empty()
+        
+        # addin points for finihsing the level
+        game_stats.total_score += my_settings.nex_level_points
+        display_score.update_score()
+        
         # increasing the difficulty
         my_settings.next_level()
+
         position_alien_ships(my_settings,screen,alien_ships)
+
+        # updating level
+        game_stats.level += 1
+        display_score.update_level()
     
 def remove_all_rockets(rockets : Group , removing_all : bool = False) -> None:
     """Removing all existing rockets"""
@@ -172,38 +199,41 @@ def max_alien_ships_y(my_settings : MySettings, alien_ship: Alien_Ship) -> int:
     return Max_aliens_ships_y
 
 def if_allien_ship_reached_bottom(my_settings : MySettings, game_stats : Statistics, \
-    screen : pygame.Surface, space_ship : SpaceShip, alien_ships : Group, \
-        rockets : Group) -> None :
+    display_score : Scores, screen : pygame.Surface, space_ship : SpaceShip, \
+    alien_ships : Group, rockets : Group) -> None :
         """Checking if any alien ships reached the bottom of the screen"""
         screen_rect = screen.get_rect()
         for alien in alien_ships:
             if alien.rect.bottom >= screen_rect.bottom:
                 # same as palyer loosing
-                ending_life_ship(my_settings,game_stats,screen,space_ship,alien_ships,\
-                    rockets)
+                ending_life_ship(my_settings,game_stats,display_score,screen,\
+                    space_ship,alien_ships,rockets)
                 #ending the game
                 break
 
 def update_alien_ships(my_settings : MySettings, game_stats : Statistics, \
-    screen : pygame.Surface, space_ship : SpaceShip, alien_ships : Group, \
-        rockets : Group) -> None :
+    display_score : Scores, screen : pygame.Surface, space_ship : SpaceShip,\
+    alien_ships : Group, rockets : Group) -> None :
     """Move all the allien ships"""
     alien_ships.update()
 
     # Chcking if the alien ships reached the our ship
     if pygame.sprite.spritecollideany(space_ship,alien_ships):
-        ending_life_ship(my_settings,game_stats,screen,space_ship,alien_ships,\
-            rockets)
+        ending_life_ship(my_settings,game_stats,display_score,screen,space_ship,\
+            alien_ships,rockets)
 
-    if_allien_ship_reached_bottom(my_settings,game_stats,screen,space_ship,\
-        alien_ships,rockets)
+    if_allien_ship_reached_bottom(my_settings,game_stats,display_score,screen,\
+        space_ship,alien_ships,rockets)
 
 def ending_life_ship(my_settings : MySettings, game_stats : Statistics, \
-    screen : pygame.Surface, space_ship : SpaceShip, alien_ships : Group, \
-    rockets : Group) -> None :
+    display_score : Scores, screen : pygame.Surface, space_ship : SpaceShip, \
+    alien_ships : Group, rockets : Group) -> None :
     """Logic when collison wiht an alien ship occurs"""
     # Decreassing lifes of eh player
     game_stats.ships_lifes -= 1
+
+    # updating lives on the screen
+    display_score.update_lives()
 
     if game_stats.ships_lifes > 0:
         # restart the game 
@@ -215,8 +245,18 @@ def ending_life_ship(my_settings : MySettings, game_stats : Statistics, \
         # initila position for the space ship
         space_ship.starting_pos()
     else:
+        # updating high score if the current score is higher that the actual 
+        # high score
+        update_high_score(game_stats,display_score)
         game_stats.game_on = False
 
+def update_high_score(game_stats : Statistics, display_score : Scores) -> None:
+    """Methode used for updating the high score"""
+
+    if game_stats.total_score > game_stats.high_score:
+        game_stats.high_score = game_stats.total_score
+        # updateing the score on the main view
+        display_score.update_high_score()
 
 def check_alien_ship_on_the_edege(my_settings : MySettings, \
     alien_ships : Group) -> None:

@@ -35,15 +35,16 @@ def game_on():
     while True: 
 
         # Watch for keyboard and mouse events
-        game_func.check_events(my_settings,screen,game_stats,play_button, \
+        game_func.check_events(display_score,my_settings,screen,game_stats,play_button, \
             space_ship,rockets,alien_ships)
       
         # Checking if the players has still lives left
         if game_stats.game_on:
             space_ship.update_pos()
-            game_func.update_rockets(my_settings,screen,alien_ships,rockets)
-            game_func.update_alien_ships(my_settings,game_stats,screen,space_ship,\
-                alien_ships,rockets)
+            game_func.update_rockets(my_settings,screen,alien_ships,rockets,\
+                game_stats,display_score)
+            game_func.update_alien_ships(my_settings,game_stats,display_score,\
+                screen,space_ship,alien_ships,rockets)
 
         # updatign screen 
         game_func.update_view(my_settings,game_stats,screen,display_score,\
