@@ -64,7 +64,7 @@ class Scores():
         """Updating lives"""    
         # changing the lives number to a imgage
         self.lives_text_image = self.font.render("Lives: " + \
-            str(self.game_stats.ships_lifes),True,self.tex_color_RGB)
+            str(self.game_stats.ships_lives),True,self.tex_color_RGB)
 
         #  position of the lives image
         self.lives_rect = self.lives_text_image.get_rect()

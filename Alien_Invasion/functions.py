@@ -230,12 +230,12 @@ def ending_life_ship(my_settings : MySettings, game_stats : Statistics, \
     alien_ships : Group, rockets : Group) -> None :
     """Logic when collison wiht an alien ship occurs"""
     # Decreassing lifes of eh player
-    game_stats.ships_lifes -= 1
+    game_stats.ships_lives -= 1
 
     # updating lives on the screen
     display_score.update_lives()
 
-    if game_stats.ships_lifes > 0:
+    if game_stats.ships_lives > 0:
         # restart the game 
         alien_ships.empty()
         rockets.empty()

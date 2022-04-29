@@ -11,7 +11,7 @@ class Statistics():
 
     def init_statistics(self):
         """Setting the initial values"""
-        self.ships_lifes = self.my_settings.ship_lifes
+        self.ships_lives = self.my_settings.ship_lives
         # value to store the total points 
         self.total_score = 0 
         # level
