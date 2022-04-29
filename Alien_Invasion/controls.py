@@ -9,27 +9,38 @@ class Control():
 
         self.screen = screen 
         self.screen_rect = screen.get_rect()
+        self.zoom_scale = 1.05
+        self.hover = False
 
         # Set the dimensions and properties of the button
-        self.width, self.height = 200, 50
-        self.button_color = (0,255,0)
-        self.text_color = (255,255,255)
-        self.font = pygame.font.SysFont(None,48)
+        (self.width, self.height) = (my_settings.button_width, my_settings.button_height)
+        self.button_color = my_settings.button_main_color_RGB
+        self.button_main_color = my_settings.button_main_color_RGB
+        self.button_hover_color = my_settings.button_hover_color_RGB
+        self.text_color = my_settings.button_text_color_RGB
+        self.font = pygame.font.SysFont(None,my_settings.button_text_size)
 
         # Build the buttons react object and center it
         self.rect = pygame.Rect(0,0,self.width,self.height)
         self.rect.center = self.screen_rect.center
 
-        # The buttom message needs to be prepped only once
-        self.prep_info(info)
+        #Turn info into a render image and center text on the button"""
+        self.text_image = self.font.render(info,True,self.text_color)#,self.button_color)
+        self.text_image_rect = self.text_image.get_rect()
+        self.text_image_rect.center = self.rect.center
 
-    def prep_info(self, info : str) -> None :
-        """Turn info into a render image and center text on the button"""
-        self.info_image = self.font.render(info,True,self.text_color,self.button_color)
-        self.info_image_rect = self.info_image.get_rect()
-        self.info_image_rect.center = self.rect.center
 
     def draw_button(self):
-        # Draw blank button and ten draw message
+        # Draw blank button and then draw message
+        # adjus the button if the mouse hover above the button
+        if not self.hover:
+            self.button_color = self.button_main_color
+            self.rect.width = self.width
+            self.rect.height = self.height
+        else:
+            self.button_color = self.button_hover_color
+            self.rect.width = int(self.width*self.zoom_scale)
+            self.rect.height = int(self.height*self.zoom_scale)
+        
         self.screen.fill(self.button_color,self.rect)
-        self.screen.blit(self.info_image,self.info_image_rect)
+        self.screen.blit(self.text_image,self.text_image_rect)
