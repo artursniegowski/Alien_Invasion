@@ -34,7 +34,7 @@ def game_on():
         # Watch for keyboard and mouse events
         game_func.check_events(my_settings,screen,game_stats,play_button, \
             space_ship,rockets)
-       
+       # new
         # Checking if the players has still lives left
         if game_stats.game_on:
             space_ship.update_pos()
