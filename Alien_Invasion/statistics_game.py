@@ -5,7 +5,7 @@ class Statistics():
         self.my_settings = my_settings
         self.init_statistics()
         # Main loop
-        self.game_on = True
+        self.game_on = False
 
     def init_statistics(self):
         """Setting the initial values"""

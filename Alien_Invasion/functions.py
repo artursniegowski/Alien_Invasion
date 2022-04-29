@@ -6,6 +6,7 @@ from space_ship import SpaceShip
 from rocket import Rocket
 from alien_ship import Alien_Ship
 from statistics_game import Statistics
+from controls import Control
 
 def check_events_keydown(event: pygame.event, my_settings : MySettings,\
      screen : pygame.Surface, space_ship: SpaceShip,\
@@ -45,7 +46,8 @@ def check_events_keyup(event: pygame.event, space_ship: SpaceShip) -> None:
         space_ship.moving_left = False 
 
 def check_events(my_settings : MySettings, screen : pygame.Surface, \
-    space_ship : SpaceShip, rockets : Group) -> None:
+    game_stats : Statistics, start_button : Control, space_ship : SpaceShip, \
+    rockets : Group) -> None:
     """Watch for keyboard and mouse events"""
     for event in pygame.event.get():
         # Exiting the game
@@ -58,9 +60,20 @@ def check_events(my_settings : MySettings, screen : pygame.Surface, \
             check_events_keydown(event, my_settings, screen, space_ship, \
                 rockets)
         
+        # Start button
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            (mouse_x, mouse_y) = pygame.mouse.get_pos()
+            check_in_range_start_button(game_stats,start_button,mouse_x,mouse_y)
+
+
         elif event.type == pygame.KEYUP:
             check_events_keyup(event, space_ship)
 
+def check_in_range_start_button(game_stats : Statistics, start_button : Control,\
+     mouse_x : int, mouse_y : int) -> None :
+    """checking if the usser pressed the button start"""
+    if start_button.rect.collidepoint(mouse_x,mouse_y):
+        game_stats.game_on = True
 
 def update_rockets(my_settings : MySettings, screen :pygame.Surface, \
     alien_ships : Group ,rockets : Group) -> None:
@@ -194,8 +207,9 @@ def drop_alien_ships(my_settings : MySettings, \
     for alien_ship in alien_ships:
         alien_ship.alien_ship_rect.y += my_settings.alien_ships_speed_droping
 
-def update_view(my_settings : MySettings, screen : pygame.Surface, \
-    space_ship : SpaceShip, rockets : Group, alien_ships : Group) -> None:
+def update_view(my_settings : MySettings, game_stats : Statistics, screen : pygame.Surface, \
+    space_ship : SpaceShip, rockets : Group, alien_ships : Group, \
+        button : Control) -> None:
         """Update view on tha main screen"""
         # Changing surface color
         screen.fill(my_settings.background_color)
@@ -208,6 +222,9 @@ def update_view(my_settings : MySettings, screen : pygame.Surface, \
             alien_ship.draw_alien_ship()
         # changing the sites the alien ships are moving
         check_alien_ship_on_the_edege(my_settings,alien_ships)
+        # Draw the start button if the game is not active
+        if not game_stats.game_on:
+            button.draw_button()
         # Update the screen
         pygame.display.update()
         #pygame.display.flip()
