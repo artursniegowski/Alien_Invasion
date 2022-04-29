@@ -10,3 +10,4 @@ class Statistics():
     def init_statistics(self):
         """Setting the initial values"""
         self.ships_lifes = self.my_settings.ship_lifes
+        self.total_score = 0 

@@ -7,6 +7,7 @@ from rocket import Rocket
 from alien_ship import Alien_Ship
 from statistics_game import Statistics
 from controls import Control
+from Display_score import Scores
 
 def check_events_keydown(event: pygame.event, my_settings : MySettings,\
      screen : pygame.Surface, space_ship: SpaceShip,\
@@ -238,7 +239,7 @@ def drop_alien_ships(my_settings : MySettings, \
         alien_ship.alien_ship_rect.y += my_settings.alien_ships_speed_droping
 
 def update_view(my_settings : MySettings, game_stats : Statistics, screen : pygame.Surface, \
-    space_ship : SpaceShip, rockets : Group, alien_ships : Group, \
+    display_score : Scores, space_ship : SpaceShip, rockets : Group, alien_ships : Group, \
         button : Control) -> None:
         """Update view on tha main screen"""
         # Changing surface color
@@ -252,6 +253,8 @@ def update_view(my_settings : MySettings, game_stats : Statistics, screen : pyga
             alien_ship.draw_alien_ship()
         # changing the sites the alien ships are moving
         check_alien_ship_on_the_edege(my_settings,alien_ships)
+        # drawing the score on the mian view
+        display_score.draw_score()
         # Draw the start button if the game is not active
         if not game_stats.game_on:
             button.draw_button()

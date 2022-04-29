@@ -29,7 +29,10 @@ class MySettings():
         self.button_text_color_RGB = (255,255,255)
         (self.button_width, self.button_height) = (200,50) 
         self.button_text_size = 45
-        
+        # Displaying score
+        self.score_text_color_RGB = (70,0,0)
+        self.score_text_size = 45
+
         self.init_settings_start_game()
 
     def init_settings_start_game(self) -> None:

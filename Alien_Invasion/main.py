@@ -6,6 +6,7 @@ from rocket import Rocket
 from alien_ship import Alien_Ship
 from statistics_game import Statistics
 from controls import Control
+from Display_score import Scores
 
 def game_on():
     # Main thread - init Pygame , screen etc.
@@ -19,6 +20,8 @@ def game_on():
     play_button = Control(my_settings,screen,my_settings.start_button_caption)
     # Instance to store game statistics
     game_stats = Statistics(my_settings)
+    # creaing the score on the main view
+    display_score = Scores(my_settings,screen,game_stats)
     # Make a spaceship
     space_ship = SpaceShip(my_settings,screen)
     # Creating a group of rockets
@@ -43,8 +46,8 @@ def game_on():
                 alien_ships,rockets)
 
         # updatign screen 
-        game_func.update_view(my_settings,game_stats,screen,space_ship,rockets,\
-            alien_ships,play_button)
+        game_func.update_view(my_settings,game_stats,screen,display_score,\
+            space_ship,rockets,alien_ships,play_button)
 
         
 # Start the game
