@@ -16,7 +16,7 @@ def game_on():
     pygame.display.set_caption(my_settings.caption)
     
     # Creating the play button
-    play_button = Control(my_settings,screen,"START")
+    play_button = Control(my_settings,screen,my_settings.start_button_caption)
     # Instance to store game statistics
     game_stats = Statistics(my_settings)
     # Make a spaceship
@@ -33,8 +33,8 @@ def game_on():
 
         # Watch for keyboard and mouse events
         game_func.check_events(my_settings,screen,game_stats,play_button, \
-            space_ship,rockets)
-       # new
+            space_ship,rockets,alien_ships)
+      
         # Checking if the players has still lives left
         if game_stats.game_on:
             space_ship.update_pos()

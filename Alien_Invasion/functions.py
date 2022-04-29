@@ -47,7 +47,7 @@ def check_events_keyup(event: pygame.event, space_ship: SpaceShip) -> None:
 
 def check_events(my_settings : MySettings, screen : pygame.Surface, \
     game_stats : Statistics, start_button : Control, space_ship : SpaceShip, \
-    rockets : Group) -> None:
+    rockets : Group, alien_ships : Group) -> None:
     """Watch for keyboard and mouse events"""
     for event in pygame.event.get():
         # Exiting the game
@@ -63,17 +63,45 @@ def check_events(my_settings : MySettings, screen : pygame.Surface, \
         # Start button
         elif event.type == pygame.MOUSEBUTTONDOWN:
             (mouse_x, mouse_y) = pygame.mouse.get_pos()
-            check_in_range_start_button(game_stats,start_button,mouse_x,mouse_y)
+            check_in_range_start_button(game_stats,my_settings,screen, \
+                start_button,space_ship,alien_ships,rockets,mouse_x,mouse_y)
 
+        elif event.type == pygame.MOUSEMOTION:
+            (mouse_x, mouse_y) = pygame.mouse.get_pos()
+            check_if_mouse_above_button(start_button,mouse_x,mouse_y)
 
         elif event.type == pygame.KEYUP:
             check_events_keyup(event, space_ship)
 
-def check_in_range_start_button(game_stats : Statistics, start_button : Control,\
-     mouse_x : int, mouse_y : int) -> None :
+def check_in_range_start_button(game_stats : Statistics, \
+    my_settings : MySettings, screen : pygame.Surface, start_button : Control,\
+    space_ship : SpaceShip ,alien_ships : Group ,rockets : Group, \
+        mouse_x : int, mouse_y : int) -> None :
     """checking if the usser pressed the button start"""
-    if start_button.rect.collidepoint(mouse_x,mouse_y):
+    if start_button.rect.collidepoint(mouse_x,mouse_y) and not game_stats.game_on:
+        # reseting at the start of the game
+        game_stats.init_statistics()
+        # Reset the game settings
+        my_settings.init_settings_start_game()
         game_stats.game_on = True
+
+        # Empty everything
+        alien_ships.empty()
+        rockets.empty()
+        
+
+        # Create the game 
+        position_alien_ships(my_settings,screen,alien_ships)
+        space_ship.starting_pos()
+
+
+def check_if_mouse_above_button(start_button : Control, mouse_x : int,\
+     mouse_y : int) -> None:
+    """Managing the start button if the mouse hover above it"""
+    if start_button.rect.collidepoint(mouse_x,mouse_y):
+        start_button.hover = True
+    else:
+        start_button.hover = False
 
 def update_rockets(my_settings : MySettings, screen :pygame.Surface, \
     alien_ships : Group ,rockets : Group) -> None:
@@ -91,10 +119,12 @@ def update_rockets(my_settings : MySettings, screen :pygame.Surface, \
     # remove rockets that went pssed the screen
     remove_all_rockets(rockets)
     
-    # When all alien ships were shoot down we start over
+    # When all alien ships were shoot down we start over -nxt level
     if(len(alien_ships)==0):
         #remove_all_rockets(rockets,removing_all=True)
         rockets.empty()
+        # increasing the difficulty
+        my_settings.next_level()
         position_alien_ships(my_settings,screen,alien_ships)
     
 def remove_all_rockets(rockets : Group , removing_all : bool = False) -> None:
