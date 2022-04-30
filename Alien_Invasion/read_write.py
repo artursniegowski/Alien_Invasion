@@ -36,6 +36,8 @@ class read_write_game():
                     elif atribute == 'w':
                         json.dump(json_data,file)
             except FileNotFoundError:
-                pass
-            
+                with open(self.path,'w') as file:
+                    json.dump(json_data,file)
+            except:
+                print("Reading - Writing file {} error".format(self.path))
         return json_data
