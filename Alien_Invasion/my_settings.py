@@ -32,6 +32,10 @@ class MySettings():
         # Displaying score
         self.score_text_color_RGB = (70,0,0)
         self.score_text_size = 45
+        # Path to read/save settings 
+        self.folder_name = "Alien_Invasion"
+        self.subfolder_name = "data"
+        self.file_name_json = "game_stats.json"
 
         self.init_settings_start_game()
 
