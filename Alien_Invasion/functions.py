@@ -8,6 +8,7 @@ from alien_ship import Alien_Ship
 from statistics_game import Statistics
 from controls import Control
 from Display_score import Scores
+from read_write import read_write_game
 
 def check_events_keydown(event: pygame.event, my_settings : MySettings,\
      screen : pygame.Surface, space_ship: SpaceShip,\
@@ -46,7 +47,8 @@ def check_events_keyup(event: pygame.event, space_ship: SpaceShip) -> None:
         # Stop movig to the left
         space_ship.moving_left = False 
 
-def check_events(display_scores : Scores ,my_settings : MySettings, screen : pygame.Surface, \
+def check_events(read_write_game_stats : read_write_game, \
+    display_scores : Scores,my_settings : MySettings, screen : pygame.Surface, \
     game_stats : Statistics, start_button : Control, space_ship : SpaceShip, \
     rockets : Group, alien_ships : Group) -> None:
     """Watch for keyboard and mouse events"""
@@ -64,8 +66,9 @@ def check_events(display_scores : Scores ,my_settings : MySettings, screen : pyg
         # Start button
         elif event.type == pygame.MOUSEBUTTONDOWN:
             (mouse_x, mouse_y) = pygame.mouse.get_pos()
-            check_in_range_start_button(display_scores,game_stats,my_settings,\
-                screen, start_button,space_ship,alien_ships,rockets,mouse_x,mouse_y)
+            check_in_range_start_button(read_write_game_stats,display_scores,\
+                game_stats,my_settings,screen, start_button,space_ship,\
+                    alien_ships,rockets,mouse_x,mouse_y)
 
         elif event.type == pygame.MOUSEMOTION:
             (mouse_x, mouse_y) = pygame.mouse.get_pos()
@@ -74,7 +77,8 @@ def check_events(display_scores : Scores ,my_settings : MySettings, screen : pyg
         elif event.type == pygame.KEYUP:
             check_events_keyup(event, space_ship)
 
-def check_in_range_start_button(display_scores: Scores, game_stats : Statistics,\
+def check_in_range_start_button(read_write_game_stats : read_write_game, \
+    display_scores: Scores, game_stats : Statistics,\
     my_settings : MySettings, screen : pygame.Surface, start_button : Control,\
     space_ship : SpaceShip ,alien_ships : Group ,rockets : Group, \
         mouse_x : int, mouse_y : int) -> None :
@@ -89,7 +93,15 @@ def check_in_range_start_button(display_scores: Scores, game_stats : Statistics,
         # Empty everything
         alien_ships.empty()
         rockets.empty()
-        
+
+        # reading the high score from the file
+        dict_stats = read_write_game_stats.read_json()
+        if(len(dict_stats)>0): # dict not empty
+            if dict_stats["high_score"] > game_stats.high_score: 
+                game_stats.high_score = dict_stats["high_score"]
+
+        # Display staring values for high scores
+        display_scores.update_high_score()
         # Display staring values scores
         display_scores.update_score()
         # update level

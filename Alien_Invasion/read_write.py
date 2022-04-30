@@ -1,6 +1,8 @@
 from ctypes import c_char
 from ctypes.wintypes import CHAR
 import json
+from logging import exception
+from unicodedata import name
 from my_settings import MySettings
 import os
 
@@ -11,7 +13,7 @@ class read_write_game():
     def __init__(self, my_settings : MySettings) -> None:
         
         self.my_settings = my_settings
-        self.path = os.path.join(self.my_settings.subfolder_name \
+        self.path = os.path.join(self.my_settings.folder_name \
             ,self.my_settings.subfolder_name,self.my_settings.file_name_json)
 
 
@@ -37,7 +39,9 @@ class read_write_game():
                         json.dump(json_data,file)
             except FileNotFoundError:
                 with open(self.path,'w') as file:
+                    json_data = {"high_score":0}
                     json.dump(json_data,file)
             except:
-                print("Reading - Writing file {} error".format(self.path))
+                print("Reading - Writing error file {}".format(self.path))
+                print("Maybe an empty file or not json compatible")
         return json_data
