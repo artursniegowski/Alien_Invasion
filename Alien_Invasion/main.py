@@ -23,7 +23,7 @@ def game_on():
     # creaing the score on the main view
     display_score = Scores(my_settings,screen,game_stats)
     # Make a spaceship
-    space_ship = SpaceShip(my_settings,screen)
+    space_ship = SpaceShip(my_settings,screen,0.2)
     # Creating a group of rockets
     rockets = pygame.sprite.Group()
     # Creating alien ships

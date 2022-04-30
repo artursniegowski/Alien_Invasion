@@ -1,6 +1,8 @@
+from email.headerregistry import Group
 import pygame
 from my_settings import MySettings
 from statistics_game import Statistics
+from space_ship import SpaceShip
 
 class Scores():
     """A class to show all the scores"""
@@ -23,6 +25,8 @@ class Scores():
         self.update_level()
         # update lives
         self.update_lives()
+        # drawing the ships number equel to number of lives left
+        self.draw_ships_lives()
 
     def update_score(self) -> None:
         """Updating the score"""    
@@ -72,10 +76,20 @@ class Scores():
         self.lives_rect.x -= 20
         self.lives_rect.y -= 5 
 
+    def draw_ships_lives(self) -> None:
+        """drawing number of ships equal to number of lives"""
+        self.ships_lives_drawings = pygame.sprite.Group()
+        for number_of_ship in range(self.game_stats.ships_lives):
+            ships_lives_drawing = SpaceShip(self.my_settings,self.screen,0.1)
+            ships_lives_drawing.rect.top = self.screen_rect.top
+            ships_lives_drawing.rect.x += (-ships_lives_drawing.rect.width) + number_of_ship  * ships_lives_drawing.rect.width
+            self.ships_lives_drawings.add(ships_lives_drawing)
+
     def draw_score(self) -> None:
         """drawing the score"""
         self.screen.blit(self.score_text_image,self.score_rect)
         self.screen.blit(self.high_score_text_image,self.high_score_rect)
         self.screen.blit(self.level_text_image,self.level_rect)
         self.screen.blit(self.lives_text_image,self.lives_rect)
+        self.ships_lives_drawings.draw(self.screen)
         

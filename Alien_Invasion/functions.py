@@ -96,6 +96,8 @@ def check_in_range_start_button(display_scores: Scores, game_stats : Statistics,
         display_scores.update_level()
         # update lives
         display_scores.update_lives()
+        # draw ships lives
+        display_scores.draw_ships_lives()
 
         # Create the game 
         position_alien_ships(my_settings,screen,alien_ships)
@@ -178,7 +180,7 @@ def position_alien_ships(my_settings : MySettings, screen :pygame.Surface, \
             alien_ship.alien_ship_rect.x = pos_x
             pos_y = alien_ship.alien_ship_rect.height/2 + my_settings.space_factor_y \
                 * alien_ship.alien_ship_rect.height * alien_ship_number_y 
-            alien_ship.alien_ship_rect.y = pos_y
+            alien_ship.alien_ship_rect.y = pos_y +50
             alien_ships.add(alien_ship)
 
 
@@ -234,6 +236,8 @@ def ending_life_ship(my_settings : MySettings, game_stats : Statistics, \
 
     # updating lives on the screen
     display_score.update_lives()
+    # updating the number of ships drawn
+    display_score.draw_ships_lives()
 
     if game_stats.ships_lives > 0:
         # restart the game 
@@ -299,5 +303,5 @@ def update_view(my_settings : MySettings, game_stats : Statistics, screen : pyga
         if not game_stats.game_on:
             button.draw_button()
         # Update the screen
-        pygame.display.update()
-        #pygame.display.flip()
+        #pygame.display.update()
+        pygame.display.flip()

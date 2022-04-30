@@ -1,20 +1,26 @@
 import os
 import pygame
+from pygame.sprite import Sprite
 from my_settings import MySettings
 
 
-class SpaceShip():
+class SpaceShip(Sprite):
 
-    def __init__(self, my_settings: MySettings , screen: pygame.Surface ) \
-        -> None:
+    def __init__(self, my_settings: MySettings , screen: pygame.Surface, \
+        zoom_img : float) -> None:
         """Initialize the ship and set its starting position"""
+        super().__init__()
         self.screen = screen
         self.my_settings = my_settings
+        self.zoom_img = zoom_img
         # Load the ship
         self.ship = pygame.image.load(os.path.join("Alien_Invasion","images",\
             "space_ship_2.png"))
         self.ship.convert()
-        self.ship = pygame.transform.rotozoom(self.ship, 0, 0.2)
+        self.ship = pygame.transform.rotozoom(self.ship, 0, self.zoom_img)
+
+        # for Sprite
+        self.image = self.ship
 
         self.ship_rect = self.ship.get_rect()
         self.screen_rect = self.screen.get_rect()
