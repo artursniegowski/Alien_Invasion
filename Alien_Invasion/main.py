@@ -7,6 +7,7 @@ from alien_ship import Alien_Ship
 from statistics_game import Statistics
 from controls import Control
 from Display_score import Scores
+from read_write import read_write_game
 
 def game_on():
     # Main thread - init Pygame , screen etc.
@@ -30,6 +31,8 @@ def game_on():
     alien_ships = pygame.sprite.Group()
     # Position all the alien ships
     game_func.position_alien_ships(my_settings,screen,alien_ships)
+    # managing and storing data - game stats to a file
+    read_write = read_write_game(my_settings)
     
     # run window
     while True: 
