@@ -35,6 +35,9 @@ class MySettings():
         # Path to read/save settings 
         self.folder_name = "Alien_Invasion"
         self.subfolder_name = "data"
+        self.subfolder_name_image = "images"
+        self.name_alien_ship = "alien_ship_2.png"
+        self.name_main_ship = "space_ship_2.png"
         self.file_name_json = "game_stats.json"
 
         self.init_settings_start_game()

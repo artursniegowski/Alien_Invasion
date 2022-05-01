@@ -82,7 +82,8 @@ class Scores():
         for number_of_ship in range(self.game_stats.ships_lives):
             ships_lives_drawing = SpaceShip(self.my_settings,self.screen,0.1)
             ships_lives_drawing.rect.top = self.screen_rect.top
-            ships_lives_drawing.rect.x += (-ships_lives_drawing.rect.width) + number_of_ship  * ships_lives_drawing.rect.width
+            ships_lives_drawing.rect.x += (-ships_lives_drawing.rect.width) + \
+                number_of_ship  * ships_lives_drawing.rect.width
             self.ships_lives_drawings.add(ships_lives_drawing)
 
     def draw_score(self) -> None:

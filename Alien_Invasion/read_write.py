@@ -1,5 +1,3 @@
-from ctypes import c_char
-from ctypes.wintypes import CHAR
 import json
 from logging import exception
 from unicodedata import name

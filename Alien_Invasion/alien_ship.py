@@ -14,8 +14,9 @@ class Alien_Ship(Sprite):
         self.my_settings = my_settings
 
         # Load the alien ship
-        self.alien_ship = pygame.image.load(os.path.join("Alien_Invasion",\
-            "images","alien_ship_2.png"))
+        self.alien_ship = pygame.image.load(os.path.join(\
+            self.my_settings.folder_name,self.my_settings.subfolder_name_image,\
+                self.my_settings.name_alien_ship))
         self.alien_ship.convert()
         self.alien_ship = pygame.transform.rotozoom(self.alien_ship, 0, 0.1)
 

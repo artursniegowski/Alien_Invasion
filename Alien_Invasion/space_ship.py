@@ -14,8 +14,9 @@ class SpaceShip(Sprite):
         self.my_settings = my_settings
         self.zoom_img = zoom_img
         # Load the ship
-        self.ship = pygame.image.load(os.path.join("Alien_Invasion","images",\
-            "space_ship_2.png"))
+        self.ship = pygame.image.load(os.path.join(\
+            self.my_settings.folder_name,self.my_settings.subfolder_name_image,\
+                self.my_settings.name_main_ship))
         self.ship.convert()
         self.ship = pygame.transform.rotozoom(self.ship, 0, self.zoom_img)
 
