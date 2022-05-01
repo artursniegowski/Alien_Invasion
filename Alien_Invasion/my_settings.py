@@ -55,7 +55,7 @@ class MySettings():
         # starting score for alien ship
         self.alien_ship_points = 10
         # starting score for finishing a level
-        self.nex_level_points = 40
+        self.next_level_points = 40
 
 
 
@@ -66,4 +66,4 @@ class MySettings():
         self.rocket_speed += 0.2
         self.ship_speed += 0.1
         self.alien_ship_points += 5
-        self.nex_level_points += 15
+        self.next_level_points += 15
