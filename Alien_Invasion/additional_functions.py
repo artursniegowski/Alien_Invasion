@@ -49,7 +49,7 @@ def posotion_alien_ships_shiftig(max_aliens_ships_x : int, \
                      alien_ship_number_x 
             alien_ship.alien_ship_rect.x = pos_x
             pos_y = alien_ship.alien_ship_rect.height/2 + \
-                my_settings.space_factor_y * alien_ship.alien_ship_rect.height *\
+                my_settings.space_factor_y * alien_ship.alien_ship_rect.height*\
                      alien_ship_number_y 
             alien_ship.alien_ship_rect.y = pos_y +50
             alien_ships.add(alien_ship)

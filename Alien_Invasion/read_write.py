@@ -53,7 +53,7 @@ class read_write_game():
         else:
             return 0
 
-    def write_high_score(self,high_Score: int, __key_dict : str = "high_score") \
+    def write_high_score(self,high_Score: int, __key_dict : str = "high_score")\
         -> None :
         """Writing high score to the file"""        
         dict_stats = {}

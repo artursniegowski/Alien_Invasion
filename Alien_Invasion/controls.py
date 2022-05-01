@@ -13,7 +13,8 @@ class Control():
         self.hover = False
 
         # Set the dimensions and properties of the button
-        (self.width, self.height) = (my_settings.button_width, my_settings.button_height)
+        (self.width, self.height) = (my_settings.button_width, \
+            my_settings.button_height)
         self.button_color = my_settings.button_main_color_RGB
         self.button_main_color = my_settings.button_main_color_RGB
         self.button_hover_color = my_settings.button_hover_color_RGB
@@ -25,7 +26,7 @@ class Control():
         self.rect.center = self.screen_rect.center
 
         #Turn info into a render image and center text on the button"""
-        self.text_image = self.font.render(info,True,self.text_color)#,self.button_color)
+        self.text_image = self.font.render(info,True,self.text_color)
         self.text_image_rect = self.text_image.get_rect()
         self.text_image_rect.center = self.rect.center
 

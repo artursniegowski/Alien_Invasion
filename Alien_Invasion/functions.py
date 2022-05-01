@@ -95,7 +95,7 @@ def update_rockets(my_settings : MySettings, screen :pygame.Surface, \
     
     # When all alien ships were shoot down we start over -next level
     if(len(alien_ships)==0):
-        #remove_all_rockets(rockets,removing_all=True)
+        
         rockets.empty()
         
         # addin points for finihsing the level
