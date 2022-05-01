@@ -46,8 +46,8 @@ def game_on():
             space_ship.update_pos()
             game_func.update_rockets(my_settings,screen,alien_ships,rockets,\
                 game_stats,display_score)
-            game_func.update_alien_ships(my_settings,game_stats,display_score,\
-                screen,space_ship,alien_ships,rockets)
+            game_func.update_alien_ships(read_write,my_settings,game_stats,\
+                display_score,screen,space_ship,alien_ships,rockets)
 
         # updatign screen 
         game_func.update_view(my_settings,game_stats,screen,display_score,\

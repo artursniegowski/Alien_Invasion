@@ -27,9 +27,6 @@ def check_events_keydown(event: pygame.event, my_settings : MySettings,\
     elif event.key == pygame.K_SPACE:
         # New rocket - hit spacebar
         add_rocket(space_ship,rockets,screen,my_settings)
-        #if len(rockets) < my_settings.rocket_capacity:
-        #    rocket = Rocket(my_settings,screen,space_ship)
-        #    rockets.add(rocket)
 
 def add_rocket(space_ship : SpaceShip , rockets : Group , \
     screen : pygame.Surface, my_settings : MySettings) -> None :
@@ -95,10 +92,8 @@ def check_in_range_start_button(read_write_game_stats : read_write_game, \
         rockets.empty()
 
         # reading the high score from the file
-        dict_stats = read_write_game_stats.read_json()
-        if(len(dict_stats)>0): # dict not empty
-            if dict_stats["high_score"] > game_stats.high_score: 
-                game_stats.high_score = dict_stats["high_score"]
+        update_high_score_file(read_write_game_stats.return_high_score(),\
+            game_stats)
 
         # Display staring values for high scores
         display_scores.update_high_score()
@@ -115,6 +110,11 @@ def check_in_range_start_button(read_write_game_stats : read_write_game, \
         position_alien_ships(my_settings,screen,alien_ships)
         space_ship.starting_pos()
 
+def update_high_score_file(file_high_score : int, game_stats : Statistics) \
+    -> None:
+    """Methode used for updating the high score from file"""
+    if file_high_score > game_stats.high_score:
+        game_stats.high_score = file_high_score
 
 def check_if_mouse_above_button(start_button : Control, mouse_x : int,\
      mouse_y : int) -> None:
@@ -212,7 +212,8 @@ def max_alien_ships_y(my_settings : MySettings, alien_ship: Alien_Ship) -> int:
 
     return Max_aliens_ships_y
 
-def if_allien_ship_reached_bottom(my_settings : MySettings, game_stats : Statistics, \
+def if_allien_ship_reached_bottom(read_write_game_stats : read_write_game, \
+    my_settings : MySettings, game_stats : Statistics, \
     display_score : Scores, screen : pygame.Surface, space_ship : SpaceShip, \
     alien_ships : Group, rockets : Group) -> None :
         """Checking if any alien ships reached the bottom of the screen"""
@@ -220,12 +221,13 @@ def if_allien_ship_reached_bottom(my_settings : MySettings, game_stats : Statist
         for alien in alien_ships:
             if alien.rect.bottom >= screen_rect.bottom:
                 # same as palyer loosing
-                ending_life_ship(my_settings,game_stats,display_score,screen,\
-                    space_ship,alien_ships,rockets)
+                ending_life_ship(read_write_game_stats,my_settings,game_stats, \
+                    display_score,screen,space_ship,alien_ships,rockets)
                 #ending the game
                 break
 
-def update_alien_ships(my_settings : MySettings, game_stats : Statistics, \
+def update_alien_ships(read_write_game_stats : read_write_game, \
+    my_settings : MySettings, game_stats : Statistics, \
     display_score : Scores, screen : pygame.Surface, space_ship : SpaceShip,\
     alien_ships : Group, rockets : Group) -> None :
     """Move all the allien ships"""
@@ -233,13 +235,14 @@ def update_alien_ships(my_settings : MySettings, game_stats : Statistics, \
 
     # Chcking if the alien ships reached the our ship
     if pygame.sprite.spritecollideany(space_ship,alien_ships):
-        ending_life_ship(my_settings,game_stats,display_score,screen,space_ship,\
-            alien_ships,rockets)
+        ending_life_ship(read_write_game_stats,my_settings,game_stats, \
+            display_score,screen,space_ship,alien_ships,rockets)
 
-    if_allien_ship_reached_bottom(my_settings,game_stats,display_score,screen,\
-        space_ship,alien_ships,rockets)
+    if_allien_ship_reached_bottom(read_write_game_stats, my_settings,game_stats,\
+        display_score,screen,space_ship,alien_ships,rockets)
 
-def ending_life_ship(my_settings : MySettings, game_stats : Statistics, \
+def ending_life_ship(read_write_game_stats : read_write_game, \
+    my_settings : MySettings, game_stats : Statistics, \
     display_score : Scores, screen : pygame.Surface, space_ship : SpaceShip, \
     alien_ships : Group, rockets : Group) -> None :
     """Logic when collison wiht an alien ship occurs"""
@@ -264,6 +267,11 @@ def ending_life_ship(my_settings : MySettings, game_stats : Statistics, \
         # updating high score if the current score is higher that the actual 
         # high score
         update_high_score(game_stats,display_score)
+        # write high score to the json file for future use
+        high_score_file = read_write_game_stats.return_high_score()
+        if game_stats.high_score > high_score_file:
+            read_write_game_stats.write_high_score(game_stats.high_score)
+
         game_stats.game_on = False
 
 def update_high_score(game_stats : Statistics, display_score : Scores) -> None:
