@@ -15,3 +15,14 @@ of the player
 
 The file "requirements.txt" includes all the python packages that need to be 
 installed to run this game
+
+
+**Game View**
+
+![Screenshot](docs/img/main_screen.png)</br>
+
+
+![Screenshot](docs/img/main_screen_2.png)</br>
+
+
+![Screenshot](docs/img/main_screen_3.png)</br>
