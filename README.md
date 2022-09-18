@@ -19,10 +19,10 @@ installed to run this game
 
 **Game View**
 
-![Screenshot](docs/img/main_screen.png)</br>
+![Screenshot](docs/img/main_screen.PNG)</br>
 
 
 ![Screenshot](docs/img/main_screen_2.png)</br>
 
 
-![Screenshot](docs/img/main_screen_3.png)</br>
+![Screenshot](docs/img/main_screen_3.PNG)</br>
